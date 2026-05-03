@@ -24,6 +24,7 @@ class SystemsManager:
             except ValueError:
                 print("Please enter a valid integer.\n")
 
+
     def parse_equation(self, text):
 
         # Parse an equation string like '3x + 5y - 6z = 8' into a list of
@@ -89,39 +90,26 @@ class SystemsManager:
         row.append(constant)
         return row
 
+
     def read_equation_row(self, row_number):
 
-        # Reads one equation from the user and return it as a list of numbers.
-        # The list has length self.size + 1 (n coefficients + 1 constant).
-        # The user needs to enter n + 1 numbers per row
-
-        expected_count = self.size + 1
+        # Reads one equation from the user as an equation string
+        # (e.g., '3x + 5y - 6z = 8') and return it as a list of numbers.
+        # Keeps asking until the user gives a valid equation.
 
         while True:
-            # Prompts the user; show them which equation we're on
             raw = input(f"Equation {row_number}: ").strip()
 
-            # Catch the case where they just pressed Enter
             if raw == "":
-                print(" You didn't enter anything. Please try again.")
+                print("You didn't enter anything. Please try again.")
                 continue
 
-            # Splits the input on whitespace into a list of strings.
-            # "2 1 -1 8".split() gives ["2", "1", "-1", "8"]
-            parts = raw.split()
+            # Try to parse the equation
+            row = self.parse_equation(raw)
 
-            # Checks if we got the right count BEFORE trying to convert
-            if len(parts) != expected_count:
-                print(f" Expected {expected_count} numbers, got {len(parts)}. Try again.")
-                continue
-
-            # Now tries to convert each piece to a float ( in case decimals appear in the solution).
-            # We use try/except in case any piece isn't a valid number.
-            try:
-                row = [float(p) for p in parts]
-                return row  # success — give the row back to the caller
-            except ValueError:
-                print(" One of those wasn't a valid number. Try again.")
+            # parse_equation returns None if something went wrong;
+            if row is not None:
+                return row
 
     def read_all_equations(self):
         # showing an example of what the user should input
