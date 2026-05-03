@@ -76,6 +76,58 @@ class SystemsManager:
             row = self.read_equation_row(i + 1)
             self.augmented.append(row)
 
+    def display_matrix(self):
+
+        # Print the current augmented matrix in a readable format.
+        # Shows row numbers so the user knows which row to edit if needed.
+
+        print("\nHere's the augmented matrix [A | b] we built from your equations:\n")
+        for i, row in enumerate(self.augmented):
+            # Separate the coefficients from the constant with a vertical bar
+            coeffs = row[:-1]  # everything except the last element
+            constant = row[-1]  # the last element
+
+            # Format each number to 2 decimal places, padded to width 7
+            coeff_str = "  ".join(f"{value:7.2f}" for value in coeffs)
+            print(f"  Row {i + 1}:  [ {coeff_str}  |  {constant:7.2f} ]")
+        print()
+
+    def confirm_or_edit(self):
+        """
+        Show the matrix and ask the user if it looks right.
+        If not, let them re-enter individual rows until they're satisfied.
+        """
+        while True:
+            self.display_matrix()
+            answer = input("Is this correct? (y to continue, n to edit a row): ").strip().lower()
+
+            if answer == "y":
+                return  # user is happy, we're done
+            elif answer == "n":
+                # Ask which row needs fixing
+                self.edit_row()
+            else:
+                print("  ! Please answer 'y' or 'n'.")
+
+    def edit_row(self):
+        """
+        Ask the user which row to edit, then re-read just that row.
+        """
+        while True:
+            try:
+                row_num = int(input(f"Which row do you want to fix? (1 to {self.size}): "))
+                if 1 <= row_num <= self.size:
+                    # Re-read that row using our existing method
+                    new_row = self.read_equation_row(row_num)
+                    # Replace the bad row in our matrix
+                    # row_num is 1-based, but list indexes are 0-based
+                    self.augmented[row_num - 1] = new_row
+                    return
+                else:
+                    print(f"  ! Row number must be between 1 and {self.size}.")
+            except ValueError:
+                print("  ! Please enter a valid row number.")
+
     def solve_linear_system(self):
         # Choice 1: Solve a system of n linear equations in n unknowns.
         print("\n Solving a System of Linear Equations ")
