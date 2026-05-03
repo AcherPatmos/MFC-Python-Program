@@ -37,7 +37,7 @@ class SystemsManager:
 
             # Catch the case where they just pressed Enter
             if raw == "":
-                print("  ! You didn't enter anything. Please try again.")
+                print(" You didn't enter anything. Please try again.")
                 continue
 
             # Split the input on whitespace into a list of strings.
@@ -46,7 +46,7 @@ class SystemsManager:
 
             # Check we got the right count BEFORE trying to convert
             if len(parts) != expected_count:
-                print(f"  ! Expected {expected_count} numbers, got {len(parts)}. Try again.")
+                print(f" Expected {expected_count} numbers, got {len(parts)}. Try again.")
                 continue
 
             # Now try to convert each piece to a float.
@@ -55,7 +55,7 @@ class SystemsManager:
                 row = [float(p) for p in parts]
                 return row  # success — give the row back to the caller
             except ValueError:
-                print("  ! One of those wasn't a valid number. Try again.")
+                print(" One of those wasn't a valid number. Try again.")
 
     def solve_linear_system(self):
         # Choice 1: Solve a system of n linear equations in n unknowns.
