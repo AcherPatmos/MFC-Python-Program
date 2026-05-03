@@ -1,4 +1,5 @@
 import re
+from gaussian_method_operator import GaussSolver
 class SystemsManager:
 
     # The brain of the program. Handles the actual math operations:
@@ -154,7 +155,7 @@ class SystemsManager:
             self.display_matrix()
             answer = input("Is this correct? (Yes to continue, No to edit a row): ").strip().lower()
 
-            if answer == "yes":
+            if answer == "Yes":
                 return  # input is good; we can continue with solving the matrix
             elif answer == "No":
                 # Ask which row needs fixing
@@ -182,15 +183,20 @@ class SystemsManager:
                 print("  ! Please enter a valid row number.")
 
     def solve_linear_system(self):
-        # Choice 1: Solve a system of n linear equations in n unknowns.
-        print("\n Solving a System of Linear Equations ")
+        print(" Solving a System of Linear Equations ")
         self.get_size()
         self.read_all_equations()
         self.confirm_or_edit()
 
-        # At this point self.augmented holds the verified system.
-        # Next step: actually solve it with Gaussian elimination.
-        print("Matrix confirmed. Ready to solve! (We'll add this next.)")
+        # calls methods in GaussSolver class
+        solver = GaussSolver(self.augmented, self.size)
+        solver.solve()
+
+        if solver.is_singular:
+            print("\nThe system has no unique solution.")
+        else:
+            # Will display solver.solution nicely once it's computed
+            print("\nSolution found! (We'll display it next.)")
 
     def find_inverse(self):
         """
