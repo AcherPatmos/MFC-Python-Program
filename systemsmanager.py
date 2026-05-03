@@ -112,17 +112,16 @@ class SystemsManager:
                 return row
 
     def read_all_equations(self):
-        # showing an example of what the user should input
         if self.size == 3:
-            example = "2 1 -1 8"
-        else:  # size == 4
-            example = "2 1 -1 3 8"
+            example = "3x + 5y - 6z = 8"
+        else:
+            example = "3x + 5y - 6z + 2w = 8"
 
-        print(f"\n Input Mode: Enter {self.size + 1} numbers per row (e.g., {example}) ")
+        print(f"\n--- Input Mode: Enter equations using x, y, z"
+              f"{', w' if self.size == 4 else ''} ---")
+        print(f"    Example: {example}\n")
 
-        # Reset the storage in case we're reading a fresh system of linear equations
         self.augmented = []
-
         # Loop n times, reading one equation per iteration
         for i in range(self.size):
             # range(self.size) gives 0, 1, 2, ... but we usually count from 1,
