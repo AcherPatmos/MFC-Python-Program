@@ -93,21 +93,21 @@ class SystemsManager:
         print()
 
     def confirm_or_edit(self):
-        """
-        Show the matrix and ask the user if it looks right.
-        If not, let them re-enter individual rows until they're satisfied.
-        """
+
+        # Show the matrix and ask the user if it looks right.
+        # If not, let them re-enter individual rows until they're satisfied.
+
         while True:
             self.display_matrix()
-            answer = input("Is this correct? (y to continue, n to edit a row): ").strip().lower()
+            answer = input("Is this correct? (Yes to continue, No to edit a row): ").strip().lower()
 
-            if answer == "y":
-                return  # user is happy, we're done
-            elif answer == "n":
+            if answer == "yes":
+                return  # input is good; we can continue with solving the matrix
+            elif answer == "No":
                 # Ask which row needs fixing
                 self.edit_row()
             else:
-                print("  ! Please answer 'y' or 'n'.")
+                print(" Please answer Yes or No.")
 
     def edit_row(self):
         """
