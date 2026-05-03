@@ -1,3 +1,4 @@
+import re
 class SystemsManager:
 
     # The brain of the program. Handles the actual math operations:
@@ -22,6 +23,71 @@ class SystemsManager:
                     print("Size must be exactly 3 or 4.\n")
             except ValueError:
                 print("Please enter a valid integer.\n")
+
+    def parse_equation(self, text):
+
+        # Parse an equation string like '3x + 5y - 6z = 8' into a list of
+        # coefficients and a constant: [3, 5, -6, 8].
+        # Decide which variables to look for based on n
+
+        if self.size == 3:
+            variables = ['x', 'y', 'z']
+        else:  # size == 4
+            variables = ['x', 'y', 'z', 'w']
+
+        # Remove all spaces so '3x + 5y' and '3x+5y' behave the same
+        text = text.replace(" ", "").lower()
+
+        # The equation must contain exactly one '=' sign
+        if text.count("=") != 1:
+            print(" Equation must contain exactly one '=' sign.")
+            return None
+
+        # Split into left side (the terms) and right side (the constant)
+        left, right = text.split("=")
+
+        # The right side should be a number
+        try:
+            constant = float(right)
+        except ValueError:
+            print(f" The right side of '=' must be a number, got '{right}'.")
+            return None
+
+        # Now we extract each variable's coefficient from the left side.
+        # We'll store them in a dictionary so order doesn't matter.
+        coefficients = {}
+
+        for var in variables:
+            # Built a regex pattern that finds this variable's coefficient.
+            # Examples it should match: '3x', '-3x', '+3x', 'x', '-x', '+x', '1.5x'
+            # The pattern: optional sign, optional number, then the variable letter
+            pattern = r'([+-]?\d*\.?\d*)' + var
+            match = re.search(pattern, left)
+
+            if match is None:
+                print(f" Couldn't find variable '{var}' in the equation.")
+                return None
+
+            coeff_str = match.group(1)
+
+            # Handle implicit coefficients: 'x' means 1, '-x' means -1
+            if coeff_str in ("", "+"):
+                coeff = 1.0
+            elif coeff_str == "-":
+                coeff = -1.0
+            else:
+                try:
+                    coeff = float(coeff_str)
+                except ValueError:
+                    print(f" Couldn't parse coefficient '{coeff_str}' for {var}.")
+                    return None
+
+            coefficients[var] = coeff
+
+        # Build the row in the right order: x, y, z, [w], constant
+        row = [coefficients[var] for var in variables]
+        row.append(constant)
+        return row
 
     def read_equation_row(self, row_number):
 
@@ -110,9 +176,9 @@ class SystemsManager:
                 print(" Please answer Yes or No.")
 
     def edit_row(self):
-        """
-        Ask the user which row to edit, then re-read just that row.
-        """
+
+        # Ask the user which row to edit, then re-read just that row.
+
         while True:
             try:
                 row_num = int(input(f"Which row do you want to fix? (1 to {self.size}): "))
@@ -124,7 +190,7 @@ class SystemsManager:
                     self.augmented[row_num - 1] = new_row
                     return
                 else:
-                    print(f"  ! Row number must be between 1 and {self.size}.")
+                    print(f" Row number must be between 1 and {self.size}.")
             except ValueError:
                 print("  ! Please enter a valid row number.")
 
