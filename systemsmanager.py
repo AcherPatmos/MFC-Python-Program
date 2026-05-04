@@ -16,7 +16,7 @@ class SystemsManager:
 
         while True:
             try:
-                n = int(input("Enter the size of the system (3 or 4): "))
+                n = int(input("Enter the number of variables in your equations (3 or 4): "))
                 if n == 3 or n == 4:
                     self.size = n
                     return  # we got a valid size, exit the loop
@@ -198,12 +198,11 @@ class SystemsManager:
         # so we can iterate over them together
         for var, value in zip(variables, solution):
             # Use format_number to show whole numbers without decimals
-            formatted = self.format_number(value)
+            formatted = value
             print(f"  {var} = {formatted}")
 
     def solve_linear_system(self):
-        print(" Solving a System of Linear Equations ")
-        self.get_size()
+
         self.read_all_equations()
         self.confirm_or_edit()
 
@@ -215,4 +214,4 @@ class SystemsManager:
             print("\nThe system has no unique solution.")
         else:
             # Will display solver.solution nicely once it's computed
-            print(f"The answer to the system is {self.display_solution(solver.solution)}")
+            self.display_solution(solver.solution)
