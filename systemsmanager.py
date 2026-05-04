@@ -2,8 +2,8 @@ import re
 from gaussian_method_operator import GaussSolver
 class SystemsManager:
 
-    # The brain of the program. Handles the actual math operations:
-    # solving systems of linear equations and finding matrix inverses.
+    # The brain of the program. Handles the operations:
+    # directing to the function method solving systems of linear equations
 
     def __init__(self):
         # We'll store the matrix size here once the user provides it.
