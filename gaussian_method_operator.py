@@ -64,6 +64,33 @@ class GaussSolver:
                             self.augmented[r][c] - factor * self.augmented[k][c]
                     )
 
+    def back_substitution(self):
+
+        # Phase 2: Use the row-echelon transformed matrix to find each unknown,
+        # starting from the last and working upward.
+
+        # Make a list of n zeros to hold the solution.
+        # Position 0 will hold x1 (i.e., x), position 1 holds x2 (y), etc.
+        solution = [0.0] * self.n
+
+        # Loop from the last row (index n-1) up to the first (index 0).
+        # range(self.n - 1, -1, -1) goes: n-1, n-2, ..., 1, 0
+        for i in range(self.n - 1, -1, -1):
+
+            # Start with the right-hand side of row i (the last column entry)
+            rhs = self.augmented[i][self.n]
+
+            # Subtract the contributions of already-known unknowns
+            # (the ones to the right of position i — these are already solved)
+            for j in range(i + 1, self.n):
+                rhs = rhs - self.augmented[i][j] * solution[j]
+
+            # Divide by the diagonal entry to solve for unknown i
+            solution[i] = rhs / self.augmented[i][i]
+
+        self.solution = solution
+
+
     def solve(self):
 
         # Runs Gaussian elimination + back-substitution to find the solution.
