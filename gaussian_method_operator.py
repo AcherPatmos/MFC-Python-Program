@@ -68,7 +68,6 @@ class GaussSolver:
 
         # Phase 2: Use the row-echelon transformed matrix to find each unknown,
         # starting from the last and working upward.
-
         # Make a list of n zeros to hold the solution.
         # Position 0 will hold x1 (i.e., x), position 1 holds x2 (y), etc.
         solution = [0.0] * self.n

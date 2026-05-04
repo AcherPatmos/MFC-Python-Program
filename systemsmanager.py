@@ -153,11 +153,11 @@ class SystemsManager:
 
         while True:
             self.display_matrix()
-            answer = input("Is this correct? (Yes to continue, No to edit a row): ").strip().lower()
+            answer = input("Is this correct? (yes to continue, no to edit a row): ").strip().lower()
 
-            if answer == "Yes":
+            if answer == "yes":
                 return  # input is good; we can continue with solving the matrix
-            elif answer == "No":
+            elif answer == "no":
                 # Ask which row needs fixing
                 self.edit_row()
             else:
@@ -182,6 +182,25 @@ class SystemsManager:
             except ValueError:
                 print("  ! Please enter a valid row number.")
 
+    def display_solution(self, solution):
+        # Display the solution vector with proper variable names.
+        # For n=3: shows x, y, z.
+        # For n=4: shows x, y, z, w.
+
+        # Pick the right variable names based on the size
+        if self.size == 3:
+            variables = ['x', 'y', 'z']
+        else:  # size == 4
+            variables = ['x', 'y', 'z', 'w']
+
+        print("\nSolution:")
+        # zip pairs each variable name with its corresponding value
+        # so we can iterate over them together
+        for var, value in zip(variables, solution):
+            # Use format_number to show whole numbers without decimals
+            formatted = self.format_number(value)
+            print(f"  {var} = {formatted}")
+
     def solve_linear_system(self):
         print(" Solving a System of Linear Equations ")
         self.get_size()
@@ -196,13 +215,4 @@ class SystemsManager:
             print("\nThe system has no unique solution.")
         else:
             # Will display solver.solution nicely once it's computed
-            print("\nSolution found! (We'll display it next.)")
-
-    def find_inverse(self):
-        """
-        Choice 2: Find the inverse of an n x n matrix.
-        Stub for now — we'll come back to this later.
-        """
-        print("\n--- Finding the Inverse of a Matrix ---")
-        self.get_size()
-        print(f"You'll be entering a {self.size}x{self.size} matrix.")
+            print(f"The answer to the system is {self.display_solution(solver.solution)}")
