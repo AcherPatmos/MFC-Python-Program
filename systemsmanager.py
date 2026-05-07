@@ -9,7 +9,7 @@ class SystemsManager:
         # We'll store the matrix size here once the user provides it.
         # For now, it's None because we don't know it yet.
         self.size = None
-        self.augmented_matrix = []
+
 
     def get_size(self):
         # Ask the user for the size of the system (must be 3 or 4).
